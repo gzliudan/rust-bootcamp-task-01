@@ -55,7 +55,8 @@ impl CmdExector for TextDecryptArgs {
 
 impl CmdExector for TextGenKeyArgs {
     fn execute(self) -> anyhow::Result<()> {
-        generate_text_key();
+        let key = generate_text_key();
+        println!("text key: {}", key);
         Ok(())
     }
 }
