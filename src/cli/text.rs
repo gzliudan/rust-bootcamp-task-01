@@ -41,7 +41,8 @@ pub struct TextGenKeyArgs {}
 
 impl CmdExector for TextEncryptArgs {
     fn execute(self) -> anyhow::Result<()> {
-        encrypt_text(&self.key, &self.message);
+        let result = encrypt_text(&self.key, &self.message)?;
+        println!("encrypt result: {result}");
         Ok(())
     }
 }

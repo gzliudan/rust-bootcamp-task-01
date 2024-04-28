@@ -1,13 +1,18 @@
 use anyhow::Result;
-
+use base64::{engine::general_purpose::STANDARD, Engine as _};
 use chacha20poly1305::{
-    aead::{KeyInit, OsRng},
+    aead::{generic_array::GenericArray, Aead, AeadCore, KeyInit, OsRng},
     ChaCha20Poly1305,
 };
 
-// 文本加密解密
-pub fn encrypt_text(key: &str, msg: &str) {
-    println!("encrypt text: key={}, msg={}", key, msg);
+pub fn encrypt_text(key: &str, msg: &str) -> Result<String> {
+    let bin_key = make_binary_key(key)?;
+    let cipher = ChaCha20Poly1305::new(GenericArray::from_slice(&bin_key));
+    let nonce = ChaCha20Poly1305::generate_nonce(&mut OsRng); // 96-bits; unique per message
+    let ciphertext = cipher
+        .encrypt(&nonce, msg.as_bytes())
+        .map_err(|e| anyhow::anyhow!(e))?;
+    Ok(STANDARD.encode(ciphertext))
 }
 
 pub fn decrypt_text(key: &str, msg: &str) {
