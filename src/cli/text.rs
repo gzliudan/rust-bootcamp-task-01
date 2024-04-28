@@ -49,7 +49,8 @@ impl CmdExector for TextEncryptArgs {
 
 impl CmdExector for TextDecryptArgs {
     fn execute(self) -> anyhow::Result<()> {
-        decrypt_text(&self.key, &self.message);
+        let result = decrypt_text(&self.key, &self.message)?;
+        println!("decrypt result: {result}");
         Ok(())
     }
 }

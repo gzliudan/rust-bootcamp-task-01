@@ -4,12 +4,44 @@
 
 阅读 chacha20poly1305 文档，了解其使用方法并构建 CLI 对输入文本进行加密/解密
 
-```bash
-# 加密并输出 base64
-rcli text encrypt -key "xxx"
+### 创建密钥
 
-# base64 > binary> 解密文本
-rcli text decrypt -key "XXX"
+```bash
+cargo run -- text gen-key
+```
+
+输出：
+
+```text
+text key: 0x6BCF8B317F430090825D8ECB7F536E9C7EEAB55E489DF22778271D5CFA83B873
+```
+
+### 加密文本
+
+输出base64
+
+```bash
+cargo run -- text encrypt --key 0x6BCF8B317F430090825D8ECB7F536E9C7EEAB55E489DF22778271D5CFA83B873 hello
+```
+
+输出：
+
+```text
+encrypt result: 7ZJvIUQaYDLgqCqb/XT/DQ78WYlPzSalpYP7k67apjLE
+```
+
+### 解密文本
+
+输入base64
+
+```bash
+cargo run -- text decrypt --key 0x6BCF8B317F430090825D8ECB7F536E9C7EEAB55E489DF22778271D5CFA83B873 7ZJvIUQaYDLgqCqb/XT/DQ78WYlPzSalpYP7k67apjLE
+```
+
+输出：
+
+```text
+decrypt result: hello
 ```
 
 ## 作业二

@@ -9,14 +9,23 @@ pub fn encrypt_text(key: &str, msg: &str) -> Result<String> {
     let bin_key = make_binary_key(key)?;
     let cipher = ChaCha20Poly1305::new(GenericArray::from_slice(&bin_key));
     let nonce = ChaCha20Poly1305::generate_nonce(&mut OsRng); // 96-bits; unique per message
-    let ciphertext = cipher
+    let mut ciphertext = cipher
         .encrypt(&nonce, msg.as_bytes())
         .map_err(|e| anyhow::anyhow!(e))?;
+    ciphertext.splice(..0, nonce.iter().copied());
     Ok(STANDARD.encode(ciphertext))
 }
 
-pub fn decrypt_text(key: &str, msg: &str) {
-    println!("decrypt text: key={}, msg={}", key, msg);
+pub fn decrypt_text(key: &str, msg: &str) -> Result<String> {
+    let bin_key = make_binary_key(key)?;
+    let bin_msg = STANDARD.decode(msg)?;
+    let (nonce, ciphertext) = bin_msg.split_at(12);
+    let nonce = GenericArray::from_slice(nonce);
+    let cipher = ChaCha20Poly1305::new(GenericArray::from_slice(&bin_key));
+    let plaintext = cipher
+        .decrypt(nonce, ciphertext)
+        .map_err(|e| anyhow::anyhow!(e))?;
+    Ok(String::from_utf8(plaintext)?)
 }
 
 pub fn generate_text_key() -> String {
@@ -50,6 +59,16 @@ mod test {
         let decoded = hex::decode(&encoded)?;
         assert_eq!(txt_key, "0x".to_string() + &encoded);
         assert_eq!(bin_key.as_slice(), decoded);
+        Ok(())
+    }
+
+    #[test]
+    fn text_encrypt_decrypt() -> Result<()> {
+        let key = "0xF5FE6EFFC4A029C3EB946E33FDF2E8F72929203A2E036B9CCF142723D04FF0A6";
+        let msg = "Hello, world!";
+        let encrypted = encrypt_text(key, msg)?;
+        let decrypted = decrypt_text(key, &encrypted)?;
+        assert_eq!(msg, &decrypted);
         Ok(())
     }
 }
