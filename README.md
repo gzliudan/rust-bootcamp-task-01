@@ -48,7 +48,27 @@ decrypt result: hello
 
 json web token(jwt) 在用户验证领域经常被用到。请构建一个 CLI 来为给定 sub/aud/exp/… 生成一个 jwt。要求生成的 jwt 可以通过 jwt.io 的验证。
 
+### 编码
+
 ```bash
-rcli jwt sign --sub acme --aud device1 --exp 14d
-rcli jwt verify -t
+cargo run -- jwt sign --aud aud --sub sub --exp 14d
+```
+
+输出：
+
+```text
+sign result: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU1MDI2NzB9.LrOP7B0Cg6g7bLh-E2Qd0MjFT34Yqiy9OXSlCtuVwgE
+```
+
+### 解码
+
+```bash
+cargo run -- jwt verify eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU1MDI2NzB9.LrOP7B0Cg6g7bLh-E2Qd0MjFT34Yqiy9OXSlCtuVwgE
+```
+
+输出：
+
+```text
+decoded token: TokenData { header: Header { typ: Some("JWT"), alg: HS256, cty: None, jku: None, jwk: None, kid: None, x5u: None, x5c: None, x5t: None, x5t_s256: None }, claims: Claims { aud: "aud", sub: "sub", exp: 1715502670 } }
+verify result: true
 ```

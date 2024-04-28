@@ -33,14 +33,16 @@ pub struct JwtVerifyArgs {
 
 impl CmdExector for JwtSignArgs {
     fn execute(self) -> anyhow::Result<()> {
-        sign_jwt(&self.sub, &self.aud, &self.exp);
+        let result = sign_jwt(self.aud, self.sub, self.exp)?;
+        println!("sign result: {result}");
         Ok(())
     }
 }
 
 impl CmdExector for JwtVerifyArgs {
     fn execute(self) -> anyhow::Result<()> {
-        verify_jwt(&self.token);
+        let result = verify_jwt(self.token)?;
+        println!("verify result: {result}");
         Ok(())
     }
 }
