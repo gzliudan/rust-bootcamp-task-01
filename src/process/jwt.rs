@@ -21,10 +21,10 @@ pub fn sign_jwt(aud: String, sub: String, exp: String) -> Result<String> {
     let exp_time = SystemTime::now() + duration;
     let exp = exp_time.duration_since(SystemTime::UNIX_EPOCH)?;
     let exp = exp.as_secs() as usize;
-    let my_claims = Claims { aud, sub, exp };
+    let claims = Claims { aud, sub, exp };
     let token = encode(
         &Header::default(),
-        &my_claims,
+        &claims,
         &EncodingKey::from_secret(SECRET.as_ref()),
     )?;
     Ok(token)
@@ -35,15 +35,16 @@ pub fn verify_jwt(token: String) -> Result<bool> {
     validation.set_audience(&["aud"]);
     validation.set_required_spec_claims(&["exp", "sub", "aud"]);
 
-    let decoded = decode::<Claims>(
+    let claims = decode::<Claims>(
         &token,
         &DecodingKey::from_secret(SECRET.as_ref()),
         &validation,
-    );
+    )
+    .map(|data| data.claims);
 
-    match decoded {
+    match claims {
         Ok(decoded_token) => {
-            println!("decoded token: {:?}", decoded_token);
+            println!("decoded claims: {:?}", decoded_token);
             Ok(true)
         }
         Err(err) => {

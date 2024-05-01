@@ -57,18 +57,18 @@ cargo run -- jwt sign --aud aud --sub sub --exp 14d
 输出：
 
 ```text
-sign result: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU1MDI2NzB9.LrOP7B0Cg6g7bLh-E2Qd0MjFT34Yqiy9OXSlCtuVwgE
+sign result: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU3NjQxOTN9.R7ZU6n23l-QdjPrJgV-Ix0hhc7pRJdPEAhg8XrA3FFw
 ```
 
 ### 解码
 
 ```bash
-cargo run -- jwt verify eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU1MDI2NzB9.LrOP7B0Cg6g7bLh-E2Qd0MjFT34Yqiy9OXSlCtuVwgE
+cargo run -- jwt verify eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU3NjQxOTN9.R7ZU6n23l-QdjPrJgV-Ix0hhc7pRJdPEAhg8XrA3FFw
 ```
 
 输出：
 
 ```text
-decoded token: TokenData { header: Header { typ: Some("JWT"), alg: HS256, cty: None, jku: None, jwk: None, kid: None, x5u: None, x5c: None, x5t: None, x5t_s256: None }, claims: Claims { aud: "aud", sub: "sub", exp: 1715502670 } }
+decoded claims: Claims { aud: "aud", sub: "sub", exp: 1715764193 }
 verify result: true
 ```
