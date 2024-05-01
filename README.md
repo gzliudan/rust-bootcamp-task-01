@@ -57,18 +57,18 @@ cargo run -- jwt sign --aud aud --sub sub --exp 14d
 输出：
 
 ```text
-sign result: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU3NjQxOTN9.R7ZU6n23l-QdjPrJgV-Ix0hhc7pRJdPEAhg8XrA3FFw
+sign result: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU3Njk1MDZ9.GQ2YJSVJaadMbBMdLwMkDwfjffEA0k2U8sIShIgH684
 ```
 
 ### 解码
 
 ```bash
-cargo run -- jwt verify eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU3NjQxOTN9.R7ZU6n23l-QdjPrJgV-Ix0hhc7pRJdPEAhg8XrA3FFw
+cargo run -- jwt eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhdWQiLCJzdWIiOiJzdWIiLCJleHAiOjE3MTU3NjkxMjB9.d6xEVPkGB95NNRyvEaXMHZ0YDMsOcoz609Eb-UkZ0E4
 ```
 
 输出：
 
 ```text
-decoded claims: Claims { aud: "aud", sub: "sub", exp: 1715764193 }
+PrivateClaim { aud: "aud", sub: "sub", exp: 1715769120 }
 verify result: true
 ```
